@@ -1,0 +1,28 @@
+name: Cypress Cloud
+
+on: 
+  workflow_dispatch:
+    inputs:
+      spec:
+        description: Run by cypress command line
+        default: cypress/e2e/*
+        
+jobs:
+ cypress-e2e-electron:
+   runs-on: ubuntu-latest
+   steps:
+   - name: Get code
+     uses: actions/checkout@v3.5.3
+     
+   - name: Cypress run
+     uses: cypress-io/github-action@v5.8.2
+     with:
+      install-command: npm install
+      browser: electron
+      record: true
+      group: UI Electron
+      spec: ${{ github.event.inputs.spec }}
+   env:
+    CYPRESS_RECORD_KEY: 622a5171-5c9b-40a2-a213-4a3ac7bb604e
+    GITHUB_TOKEN: ${{ secret.GITHUB_TOKEN }}
+       
